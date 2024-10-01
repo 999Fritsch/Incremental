@@ -4,7 +4,11 @@ let gameData = {
     goldPerClickCost: 10,
     worker: 0,
     workerCost: 100,
+    manager: 1,
+    managerCost: 10,
 };
+
+let tickRate = 1010 - gameData.manager * 10
 
 function mineGold(number, factor) {
     
@@ -23,6 +27,15 @@ function buyUpgrade(item, itemCost, itemCostMultiplier, itemDisplayId) {
         gameData[itemCost] *= itemCostMultiplier;
         document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined";
         document.getElementById(itemDisplayId).innerHTML = `Buy new ${item} (Current Amount: ` + gameData[item] + `) Cost: ` + gameData[itemCost] + " Gold";
+        if (item == "manager") {
+            tickRate = 1010 - gameData.manager * 10;
+            clearInterval(mainGameLoop);
+            mainGameLoop = window.setInterval(function() {
+                if (gameData.worker >= 1) {
+                    mineGold(gameData.goldPerClick, gameData.worker);
+                }
+            }, tickRate);
+        }
     }
 }
 
@@ -30,7 +43,7 @@ let mainGameLoop = window.setInterval(function() {
     if (gameData.worker >= 1) {
         mineGold(gameData.goldPerClick, gameData.worker);
     }
-}, 1000)
+}, tickRate)
 
 let saveGameLoop = window.setInterval(function() {
     localStorage.setItem("goldMinerSave",
