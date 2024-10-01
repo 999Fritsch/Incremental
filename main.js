@@ -16,23 +16,13 @@ function mineGold(number, factor) {
     document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined";
 }
 
-function buyGoldPerClick() {
-    if (gameData.gold >= gameData.goldPerClickCost) {
-        gameData.gold -= gameData.goldPerClickCost;
-        gameData.goldPerClick += 1;
-        gameData.goldPerClickCost *= 2;
+function buyUpgrade(item, itemCost, itemCostMultiplier, itemDisplayId) {
+    if (gameData.gold >= gameData[itemCost]) {
+        gameData.gold -= gameData[itemCost];
+        gameData[item] += 1;
+        gameData[itemCost] *= itemCostMultiplier;
         document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined";
-        document.getElementById("perClickUpgrade").innerHTML = "Upgrade Pickaxe (Currently Level " + gameData.goldPerClick + ") Cost: " + gameData.goldPerClickCost + " Gold";
-    }
-}
-
-function buyWorker() {
-    if (gameData.gold >= gameData.workerCost) {
-        gameData.gold -= gameData.workerCost;
-        gameData.worker += 1
-        gameData.workerCost *= 3;
-        document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined";
-        document.getElementById("buyWorker").innerHTML = "Buy new Worker (Current Amount: " + gameData.worker + ") Cost: " + gameData.workerCost + " Gold";
+        document.getElementById(itemDisplayId).innerHTML = `Buy new ${item} (Current Amount: ` + gameData[item] + `) Cost: ` + gameData[itemCost] + " Gold";
     }
 }
 
